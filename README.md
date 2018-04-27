@@ -1,1 +1,1 @@
-# Box-Enterprise-Development-Kit-for-Azure
+# Box Enterprise Development Kit for Azure
