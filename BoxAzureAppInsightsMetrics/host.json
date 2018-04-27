@@ -1,0 +1,22 @@
+{
+  "logger": {
+    "categoryFilter": {
+      "defaultLevel": "Information",
+      "categoryLevels": {
+        "Host.Results": "Error",
+        "Function": "Error",
+        "Host.Aggregator": "Information"
+      }
+    },
+    "aggregator": {
+      "batchSize": 1000,
+      "flushTimeout": "00:00:30"
+    }
+  },
+  "applicationInsights": {
+    "sampling": {
+      "isEnabled": true,
+      "maxTelemetryItemsPerSecond": 5
+    }
+  }
+}
