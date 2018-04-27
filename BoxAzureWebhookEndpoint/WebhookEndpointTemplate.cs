@@ -13,7 +13,7 @@ using static Box.EnterpriseDevelopmentKit.Azure.Config;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
-    public static class BoxWebhookEndpointTemplate
+    public static class WebhookEndpointTemplate
     {
         static string EXPECTED_TRIGGER = "FILE.PREVIEWED";
 
