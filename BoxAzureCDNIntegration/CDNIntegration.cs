@@ -25,6 +25,9 @@ namespace Box.EnterpriseDevelopmentKit.Azure
     //Ngrok command:
     //ngrok http -subdomain=cburnette 7071
 
+    //skills url
+    //https://cburnette.ngrok.io/api/BoxAzureSkillsTemplate
+
     public static class CDNIntegration
     {
         [FunctionName("BoxAzureCDNIntegration")]
