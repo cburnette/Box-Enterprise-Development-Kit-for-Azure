@@ -9,13 +9,19 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Box.V2.Managers;
-using static Box.EnterpriseDevelopmentKit.Azure.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
     public static class WebhookEndpointTemplate
     {
-        static string EXPECTED_TRIGGER = "FILE.PREVIEWED";
+        public const string BOX_CONFIG_KEY = "BoxConfig";
+        public const string BOX_DELIVERY_TIMESTAMP_HEADER = "BOX-DELIVERY-TIMESTAMP";
+        public const string BOX_SIGNATURE_PRIMARY_HEADER = "BOX-SIGNATURE-PRIMARY";
+        public const string BOX_SIGNATURE_SECONDARY_HEADER = "BOX-SIGNATURE-SECONDARY";
+        public const string BOX_WEBHOOK_PRIMARY_KEY_KEY = "BoxWebhookPrimaryKey";
+        public const string BOX_WEBHOOK_SECONDARY_KEY_KEY = "BoxWebhookSecondaryKey";
+        public const string EXPECTED_TRIGGER = "FILE.PREVIEWED";
 
         [FunctionName("BoxWebhookEndpointTemplate")]
         public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req, TraceWriter log, ExecutionContext context)

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Box.V2.Managers;
 using Microsoft.WindowsAzure.Storage.Queue;
 using static Box.EnterpriseDevelopmentKit.Azure.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {

@@ -30,28 +30,5 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         public const string BOX_SIGNATURE_PRIMARY_HEADER = "BOX-SIGNATURE-PRIMARY";
         public const string BOX_SIGNATURE_SECONDARY_HEADER = "BOX-SIGNATURE-SECONDARY";
 
-        public static IConfigurationRoot GetConfiguration(ExecutionContext context)
-        {
-            //https://blog.jongallant.com/2018/01/azure-function-config/
-            var config = new ConfigurationBuilder()
-                .SetBasePath(context.FunctionAppDirectory)
-                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            return config;
-        }
-
-        public static BoxClient GetBoxUserClient(IConfigurationRoot config, string userId)
-        {
-            IBoxConfig boxConfig = null;
-            var configJson = config[BOX_CONFIG_KEY];
-            boxConfig = BoxConfig.CreateFromJsonString(configJson);
-
-            var session = new BoxJWTAuth(boxConfig);
-            var userToken = session.UserToken(userId);
-
-            return session.UserClient(userToken, userId);
-        }
     }
 }

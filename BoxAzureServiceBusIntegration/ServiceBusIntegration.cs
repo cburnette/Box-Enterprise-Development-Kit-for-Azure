@@ -9,12 +9,20 @@ using Box.V2.Models;
 using Box.V2.Converter;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using static Box.EnterpriseDevelopmentKit.Azure.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
     public static class ServiceBusIntegration
     {
+        public const int INITIAL_LOOKBACK_MINUTES = 60;
+        public const string BOX_CONFIG_KEY = "BoxConfig";
+        public const string STORAGE_CONNECTION_STRING_KEY = "AzureWebJobsStorage";
+        public const string STREAM_POSITION_TABLE_NAME_KEY = "StreamPositionTableName";
+        public const string ROW_KEY_VALUE = "BoxStreamPosition";
+        public const string SERVICE_BUS_CONNECTION_STRING_KEY = "ServiceBusConnectionString";
+        public const string SERVICE_BUS_TOPIC_NAME_KEY = "ServiceBusTopicName";
+
         //commentary on why Service Bus instead of Storage Queue:  
         //https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-azure-and-service-bus-queues-compared-contrasted
 

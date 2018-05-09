@@ -1,19 +1,14 @@
 ﻿using Box.V2;
 using Box.V2.Config;
 using Box.V2.JWTAuth;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Azure.WebJobs;
 
-namespace Box.EnterpriseDevelopmentKit.Azure
+namespace Box.EnterpriseDevelopmentKit.Azure.Shared
 {
-    static class Config
+    public static class Config
     {
         public const string BOX_CONFIG_KEY = "BoxConfig";
-        public const string BOX_DELIVERY_TIMESTAMP_HEADER = "BOX-DELIVERY-TIMESTAMP";
-        public const string BOX_SIGNATURE_PRIMARY_HEADER = "BOX-SIGNATURE-PRIMARY";
-        public const string BOX_SIGNATURE_SECONDARY_HEADER = "BOX-SIGNATURE-SECONDARY";
-        public const string BOX_WEBHOOK_PRIMARY_KEY_KEY = "BoxWebhookPrimaryKey";
-        public const string BOX_WEBHOOK_SECONDARY_KEY_KEY = "BoxWebhookSecondaryKey";
 
         public static IConfigurationRoot GetConfiguration(ExecutionContext context)
         {

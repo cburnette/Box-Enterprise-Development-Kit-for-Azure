@@ -5,6 +5,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using System.Collections.Generic;
 using static Box.EnterpriseDevelopmentKit.Azure.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {

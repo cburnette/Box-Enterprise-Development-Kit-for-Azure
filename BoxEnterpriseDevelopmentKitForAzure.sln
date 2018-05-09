@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoxAspNetCoreIntegration", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{56A50F11-B577-4B8F-93C5-FADBC0736BA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxAspNetCoreExample", "Examples\BoxAspNetCoreExample\BoxAspNetCoreExample.csproj", "{B42B8FE4-31EF-4F0F-90A5-6D30C4324A2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoxAspNetCoreExample", "Examples\BoxAspNetCoreExample\BoxAspNetCoreExample.csproj", "{B42B8FE4-31EF-4F0F-90A5-6D30C4324A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxAzureSkillsEndpoint", "BoxAzureSkillsEndpoint\BoxAzureSkillsEndpoint.csproj", "{3A08C044-A2E3-4139-B779-D496AD076485}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{DBB7F76E-4CCD-48E5-A988-9113DCCC0175}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,14 @@ Global
 		{B42B8FE4-31EF-4F0F-90A5-6D30C4324A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B42B8FE4-31EF-4F0F-90A5-6D30C4324A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B42B8FE4-31EF-4F0F-90A5-6D30C4324A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A08C044-A2E3-4139-B779-D496AD076485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A08C044-A2E3-4139-B779-D496AD076485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A08C044-A2E3-4139-B779-D496AD076485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A08C044-A2E3-4139-B779-D496AD076485}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBB7F76E-4CCD-48E5-A988-9113DCCC0175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB7F76E-4CCD-48E5-A988-9113DCCC0175}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB7F76E-4CCD-48E5-A988-9113DCCC0175}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB7F76E-4CCD-48E5-A988-9113DCCC0175}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

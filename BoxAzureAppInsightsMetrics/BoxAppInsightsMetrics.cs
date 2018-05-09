@@ -5,12 +5,16 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using static Box.EnterpriseDevelopmentKit.Azure.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
     public static class BoxAppInsightsMetrics
     {
+        public const string BOX_CONFIG_KEY = "BoxConfig";
+        public const string APPINSIGHTS_INSTRUMENTATIONKEY_KEY = "APPINSIGHTS_INSTRUMENTATIONKEY";
+        public const string TIMER_SCHEDULE_EXPRESSION = "*/5 * * * * *";
+
         //https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring
 
 
