@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoxAzureSkillsEndpoint", "B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{DBB7F76E-4CCD-48E5-A988-9113DCCC0175}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxEventsServiceBusConsumerExample", "BoxEventsServiceBusConsumerExample\BoxEventsServiceBusConsumerExample.csproj", "{784B6B69-7087-4EC5-87DC-D5EB62632FCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxEventsServiceBusConsumerExample", "Examples\BoxEventsServiceBusConsumerExample\BoxEventsServiceBusConsumerExample.csproj", "{784B6B69-7087-4EC5-87DC-D5EB62632FCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

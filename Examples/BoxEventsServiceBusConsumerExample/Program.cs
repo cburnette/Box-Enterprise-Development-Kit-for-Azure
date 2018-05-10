@@ -3,6 +3,8 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Box.V2.Converter;
+using Box.V2.Models;
 using Microsoft.Azure.ServiceBus;
 
 namespace Box.EnterpriseDevelopmentKit.Azure.Examples
@@ -23,9 +25,9 @@ namespace Box.EnterpriseDevelopmentKit.Azure.Examples
         {
             subscriptionClient = new SubscriptionClient(ServiceBusConnectionString, TopicName, SubscriptionName);
 
-            Console.WriteLine("======================================================");
+            Console.WriteLine("=========================================================");
             Console.WriteLine("Press ENTER key to exit after receiving all the messages.");
-            Console.WriteLine("======================================================");
+            Console.WriteLine("=========================================================");
 
             // Register subscription message handler and receive messages in a loop.
             RegisterOnMessageHandlerAndReceiveMessages();
@@ -56,7 +58,13 @@ namespace Box.EnterpriseDevelopmentKit.Azure.Examples
         static async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
             // Process the message.
-            Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
+            BoxJsonConverter bjc = new BoxJsonConverter();
+
+            var sequence = message.SystemProperties.SequenceNumber;
+            var boxEventJson = Encoding.UTF8.GetString(message.Body);
+            var boxEvent = bjc.Parse<BoxEnterpriseEvent>(boxEventJson);
+
+            Console.WriteLine($"Received message: SequenceNumber={sequence}, Box Event Type={boxEvent.EventType}");
 
             // Complete the message so that it is not received again.
             // This can be done only if the subscriptionClient is created in ReceiveMode.PeekLock mode (which is the default).
