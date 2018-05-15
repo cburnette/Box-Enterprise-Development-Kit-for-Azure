@@ -3,6 +3,8 @@ using Box.V2.Config;
 using Box.V2.JWTAuth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.WebJobs;
+using Box.V2.Auth;
+using System;
 
 namespace Box.EnterpriseDevelopmentKit.Azure.Shared
 {
@@ -36,6 +38,15 @@ namespace Box.EnterpriseDevelopmentKit.Azure.Shared
             var userToken = session.UserToken(userId);
 
             return session.UserClient(userToken, userId);
+        }
+
+        public static BoxClient GetBoxClientWithApiKeyAndToken(string apiKey, string accessToken)
+        {
+            var auth = new OAuthSession(accessToken, "NOT_USED", 3600, "bearer");
+            var boxConfig = new BoxConfig(apiKey, "NOT_USED", new Uri("http://boxsdk"));
+            var boxClient = new BoxClient(boxConfig, auth);
+
+            return boxClient;
         }
 
         private static BoxJWTAuth GetBoxSession(IConfigurationRoot config)
