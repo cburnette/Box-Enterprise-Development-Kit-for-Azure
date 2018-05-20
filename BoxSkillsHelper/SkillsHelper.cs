@@ -5,7 +5,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 {
     public class SkillsHelper
     {
-        public static JObject CreateTranscriptCardNow(string title, string serviceName, string skillInvocationId, IList<TranscriptCardEntry> entries, double? duration=null)
+        public static JObject CreateTranscriptCard(string title, string serviceName, string skillInvocationId, IList<TranscriptCardEntry> entries, double? duration=null)
         {
             var entriesJson = new JArray();
             foreach (var entry in entries)

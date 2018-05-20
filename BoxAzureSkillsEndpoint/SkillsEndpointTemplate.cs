@@ -57,9 +57,9 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
             var boxClient = GetBoxClientWithApiKeyAndToken(config[BOX_SKILLS_API_KEY_KEY], writeToken);
 
-            var transcriptCard = CreateTranscriptCard();
-            var keywordCard = CreateKeywordCard();
-            var timelineCard = CreateTimelineCard();
+            var transcriptCard = CreateTranscriptCardNow();
+            var keywordCard = CreateKeywordCardNow();
+            var timelineCard = CreateTimelineCardNow();
 
             var cards = new JArray { transcriptCard, keywordCard, timelineCard };
 
@@ -72,7 +72,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return (ActionResult)new OkObjectResult(null);
         }
 
-        private static JObject CreateTranscriptCard()
+        private static JObject CreateTranscriptCardNow()
         {
             var appearanceOne = new TranscriptCardAppearance(9.95, 14.8);
             var entryOne = new TranscriptCardEntry("Hello World!", new List<TranscriptCardAppearance>() { appearanceOne });
@@ -82,12 +82,12 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
             var entries = new List<TranscriptCardEntry>() { entryOne, entryTwo };
 
-            var transcriptCard = CreateTranscriptCardNow("Transcript", "chad-funky-ml", Guid.NewGuid().ToString(), entries);
+            var transcriptCard = CreateTranscriptCard("Transcript", "chad-funky-ml", Guid.NewGuid().ToString(), entries);
 
             return transcriptCard;
         }
 
-        private static JObject CreateKeywordCard()
+        private static JObject CreateKeywordCardNow()
         {
             var entries = new JArray
             {
@@ -124,7 +124,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return keywordCard;
         }
 
-        private static JObject CreateTimelineCard()
+        private static JObject CreateTimelineCardNow()
         {
             var entries = new JArray
             {
