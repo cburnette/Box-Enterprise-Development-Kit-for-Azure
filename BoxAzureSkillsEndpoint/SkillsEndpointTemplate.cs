@@ -10,6 +10,8 @@ using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using static Box.EnterpriseDevelopmentKit.Azure.SkillsHelper;
+using System;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
@@ -72,44 +74,16 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
         private static JObject CreateTranscriptCard()
         {
-            var entries = new JArray
-            {
-                new JObject(
-                    new JProperty("text", "Hello World!"),
-                    new JProperty("appears",
-                        new JArray() {
-                            new JObject(
-                                new JProperty("start", 9.95),
-                                new JProperty("end", 14.8))
-                        }
-                    )
-                ),
-                new JObject(
-                    new JProperty("text", "Goodbye World!"),
-                    new JProperty("appears",
-                        new JArray() {
-                            new JObject(
-                                new JProperty("start", 14.8),
-                                new JProperty("end", 17.5))
-                        }
-                    )
-                )
-            };
+            var appearanceOne = new TranscriptCardAppearance(9.95, 14.8);
+            var entryOne = new TranscriptCardEntry("Hello World!", new List<TranscriptCardAppearance>() { appearanceOne });
 
-            JObject transcriptCard = new JObject(
-                            new JProperty("type", "skill_card"),
-                            new JProperty("skill_card_type", "transcript"),
-                            new JProperty("title", "Transcript"),
-                            new JProperty("skill",
-                                new JObject(
-                                    new JProperty("type", "service"),
-                                    new JProperty("id", "chad-funky-ml"))),
-                            new JProperty("invocation",
-                                new JObject(
-                                    new JProperty("type", "skill_invocation"),
-                                    new JProperty("id", "123456789"))),
-                            new JProperty("duration", 28),
-                            new JProperty("entries", entries));
+            var appearanceTwo = new TranscriptCardAppearance(14.8, 17.5);
+            var entryTwo = new TranscriptCardEntry("Goodbye World!", new List<TranscriptCardAppearance>() { appearanceTwo });
+
+            var entries = new List<TranscriptCardEntry>() { entryOne, entryTwo };
+
+            var transcriptCard = CreateTranscriptCardNow("Transcript", "chad-funky-ml", Guid.NewGuid().ToString(), entries);
+
             return transcriptCard;
         }
 
