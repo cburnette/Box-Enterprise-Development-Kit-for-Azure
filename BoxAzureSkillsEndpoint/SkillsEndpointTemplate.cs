@@ -86,7 +86,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             var entryTwo = new TranscriptCardEntry("Goodby Cruel World!", appearanceTwo );
 
             var entries = new List<SkillCardEntry>() { entryOne, entryTwo };
-            var transcriptCard = CreateTranscriptCard("Transcript", "chad-funky-ml", Guid.NewGuid().ToString(), entries, duration: 28);
+            var transcriptCard = CreateTranscriptCard("Transcript", "example-service-name", Guid.NewGuid().ToString(), entries, duration: 28);
             return transcriptCard;
         }
 
@@ -98,7 +98,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             var entryOne = new KeywordCardEntry("work platform", appearanceOne, appearanceTwo);
 
             var entries = new List<SkillCardEntry>() { entryOne };
-            var keywordCard = CreateKeywordCard("Topics", "chad-funky-ml", Guid.NewGuid().ToString(), entries, duration: 28);
+            var keywordCard = CreateKeywordCard("Topics", "example-service-name", Guid.NewGuid().ToString(), entries, duration: 28);
             return keywordCard;
         }
 
@@ -112,7 +112,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             var entryOne = new TimelineCardEntry("Unknown #1", imageUrl, appearanceOne, appearanceTwo );
 
             var entries = new List<SkillCardEntry>() { entryOne };
-            var timelineCard = CreateTimelineCard("Faces", "chad-funky-ml", Guid.NewGuid().ToString(), entries, duration: 28);
+            var timelineCard = CreateTimelineCard("Faces", "example-service-name", Guid.NewGuid().ToString(), entries, duration: 28);
             return timelineCard;
         }
     }
