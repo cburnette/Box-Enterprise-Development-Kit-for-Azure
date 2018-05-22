@@ -64,7 +64,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             //This is example code that generates fake data; here is where you would instead leverage the content intelligence system 
             //you are integrating with and create the appropriate card metadata.
             var transcriptCard = BuildTranscriptCardFromFakeData();
-            var keywordCard = BuildKeywordCarFromFakeData();
+            var keywordCard = BuildKeywordCardFromFakeData();
             var timelineCard = BuildTimelineCardFromFakeData();
 
             //Create the combined card metadata
@@ -89,7 +89,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return transcriptCard;
         }
 
-        private static JObject BuildKeywordCarFromFakeData()
+        private static JObject BuildKeywordCardFromFakeData()
         {
             var appearanceOne = new EntryAppearance(9.95, 0);
             var appearanceTwo = new EntryAppearance(14.8, 0);
