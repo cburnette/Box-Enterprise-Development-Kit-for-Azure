@@ -31,7 +31,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
         public class TranscriptCardEntry : SkillCardEntry
         {
-            public TranscriptCardEntry(string text, IList<EntryAppearance> appearances)
+            public TranscriptCardEntry(string text, params EntryAppearance[] appearances)
             {
                 _type = "text";
                 _text = text;
@@ -41,7 +41,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
         public class KeywordCardEntry : SkillCardEntry
         {
-            public KeywordCardEntry(string text, IList<EntryAppearance> appearances)
+            public KeywordCardEntry(string text, params EntryAppearance[] appearances)
             {
                 _type = "text";
                 _text = text;
@@ -51,7 +51,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
         public class TimelineCardEntry : SkillCardEntry
         {
-            public TimelineCardEntry(string text, string imageUrl, IList<EntryAppearance> appearances)
+            public TimelineCardEntry(string text, string imageUrl, params EntryAppearance[] appearances)
             {
                 _type = "image";
                 _text = text;
