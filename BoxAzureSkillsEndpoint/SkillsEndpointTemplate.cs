@@ -25,6 +25,8 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         public const string BOX_CONFIG_KEY = "BoxConfig";
         public const string BOX_FILE_CONTENT_URL_FORMAT_STRING = @"https://api.box.com/2.0/files/{0}/content?access_token={1}";
         public const string BOX_SKILL_TYPE = "skill_invocation";
+        public const string BOX_SKILL_METADATA_SCOPE = "global";
+        public const string BOX_SKILL_METADATA_TEMPLATE = "boxSkillsCards";
 
         [FunctionName("BoxAzureSkillsTemplate")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req, TraceWriter log, ExecutionContext context)
@@ -59,19 +61,22 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
             var boxClient = GetBoxClientWithApiKeyAndToken(config[BOX_SKILLS_API_KEY_KEY], writeToken);
 
-            var transcriptCard = BuildTranscriptCard();
-            var keywordCard = BuildKeywordCard();
-            var timelineCard = BuildTimelineCard();
+            //Build a few cards using fake data
+            var transcriptCard = BuildTranscriptCardFromFakeData();
+            var keywordCard = BuildKeywordCarFromFakeData();
+            var timelineCard = BuildTimelineCardFromFakeData();
 
+            //Create the combined card metadata
             var cards = new JArray { transcriptCard, keywordCard, timelineCard };
             var cardMetadata = CreateCardMetadata(cards);
             
-            var createdMD = await boxClient.MetadataManager.CreateFileMetadataAsync(sourceId, cardMetadata, "global", "boxSkillsCards");
+            //Upload the card metadata to Box
+            var createdMD = await boxClient.MetadataManager.CreateFileMetadataAsync(sourceId, cardMetadata, BOX_SKILL_METADATA_SCOPE, BOX_SKILL_METADATA_TEMPLATE);
 
             return (ActionResult)new OkObjectResult(null);
         }
 
-        private static JObject BuildTranscriptCard()
+        private static JObject BuildTranscriptCardFromFakeData()
         {
             var appearanceOne = new EntryAppearance(9.95, 14.8);
             var entryOne = new TranscriptCardEntry("Hello World!", new List<EntryAppearance>() { appearanceOne });
@@ -84,7 +89,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return transcriptCard;
         }
 
-        private static JObject BuildKeywordCard()
+        private static JObject BuildKeywordCarFromFakeData()
         {
             var appearanceOne = new EntryAppearance(9.95, 0);
             var appearanceTwo = new EntryAppearance(14.8, 0);
@@ -95,7 +100,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return keywordCard;
         }
 
-        private static JObject BuildTimelineCard()
+        private static JObject BuildTimelineCardFromFakeData()
         {
             var appearanceOne = new EntryAppearance(9.95, 14.8);
             var appearanceTwo = new EntryAppearance(14.8, 17.5);
