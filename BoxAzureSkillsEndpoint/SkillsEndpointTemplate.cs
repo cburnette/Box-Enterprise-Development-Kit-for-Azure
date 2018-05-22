@@ -76,6 +76,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return (ActionResult)new OkObjectResult(null);
         }
 
+        //Generates a Transcript card using fake data as an example
         private static JObject BuildTranscriptCardFromFakeData()
         {
             var appearanceOne = new EntryAppearance(9.95, 14.8);
@@ -89,6 +90,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return transcriptCard;
         }
 
+        //Generates a Keyword card using fake data as an example
         private static JObject BuildKeywordCardFromFakeData()
         {
             var appearanceOne = new EntryAppearance(9.95, 0);
@@ -100,6 +102,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             return keywordCard;
         }
 
+        //Generates a Timeline card using fake data as an example
         private static JObject BuildTimelineCardFromFakeData()
         {
             var appearanceOne = new EntryAppearance(9.95, 14.8);
