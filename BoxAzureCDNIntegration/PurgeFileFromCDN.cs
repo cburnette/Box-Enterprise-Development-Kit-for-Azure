@@ -16,7 +16,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         {
             var config = GetConfiguration(context);
 
-            log.Info($"C# Queue trigger function processed: {fileId}");
+            log.Info($"Queue trigger function processed fileId {fileId}");
 
             var creds = new AzureCredentialsFactory().FromServicePrincipal(config[AZURE_APP_CLIENT_ID_KEY], config[AZURE_APP_KEY_KEY], config[AZURE_AD_TENANT_ID_KEY], AzureEnvironment.AzureGlobalCloud);
             var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(creds).WithSubscription(config[AZURE_SUBSCRIPTION_ID_KEY]);
