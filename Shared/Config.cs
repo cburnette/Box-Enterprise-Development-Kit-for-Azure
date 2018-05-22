@@ -5,12 +5,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Azure.WebJobs;
 using Box.V2.Auth;
 using System;
+using Microsoft.AspNetCore.Http;
+using Box.V2.Managers;
 
 namespace Box.EnterpriseDevelopmentKit.Azure.Shared
 {
     public static class Config
     {
         public const string BOX_CONFIG_KEY = "BoxConfig";
+        public const string BOX_DELIVERY_TIMESTAMP_HEADER = "BOX-DELIVERY-TIMESTAMP";
+        public const string BOX_SIGNATURE_PRIMARY_HEADER = "BOX-SIGNATURE-PRIMARY";
+        public const string BOX_SIGNATURE_SECONDARY_HEADER = "BOX-SIGNATURE-SECONDARY";
+        public const string BOX_WEBHOOK_PRIMARY_KEY_KEY = "BoxWebhookPrimaryKey";
+        public const string BOX_WEBHOOK_SECONDARY_KEY_KEY = "BoxWebhookSecondaryKey";
 
         public static IConfigurationRoot GetConfiguration(ExecutionContext context)
         {
@@ -47,6 +54,16 @@ namespace Box.EnterpriseDevelopmentKit.Azure.Shared
             var boxClient = new BoxClient(boxConfig, auth);
 
             return boxClient;
+        }
+
+        public static bool ValidateWebhookSignatures(HttpRequest req, IConfigurationRoot config, string requestBody)
+        {
+            var deliveryTimestamp = req.Headers[BOX_DELIVERY_TIMESTAMP_HEADER];
+            var signaturePrimary = req.Headers[BOX_SIGNATURE_PRIMARY_HEADER];
+            var signatureSecondary = req.Headers[BOX_SIGNATURE_SECONDARY_HEADER];
+            var primaryKey = config[BOX_WEBHOOK_PRIMARY_KEY_KEY];
+            var secondaryKey = config[BOX_WEBHOOK_SECONDARY_KEY_KEY];
+            return BoxWebhooksManager.VerifyWebhook(deliveryTimestamp, signaturePrimary, signatureSecondary, requestBody, primaryKey, secondaryKey);
         }
 
         private static BoxJWTAuth GetBoxSession(IConfigurationRoot config)

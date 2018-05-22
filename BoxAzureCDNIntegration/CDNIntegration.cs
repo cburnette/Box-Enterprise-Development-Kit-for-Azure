@@ -118,16 +118,6 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             }
         }
 
-        static bool ValidateWebhookSignatures(HttpRequest req, IConfigurationRoot config, string requestBody)
-        {
-            var deliveryTimestamp = req.Headers[BOX_DELIVERY_TIMESTAMP_HEADER];
-            var signaturePrimary = req.Headers[BOX_SIGNATURE_PRIMARY_HEADER];
-            var signatureSecondary = req.Headers[BOX_SIGNATURE_SECONDARY_HEADER];
-            var primaryKey = config[BOX_WEBHOOK_PRIMARY_KEY_KEY];
-            var secondaryKey = config[BOX_WEBHOOK_SECONDARY_KEY_KEY];
-            return BoxWebhooksManager.VerifyWebhook(deliveryTimestamp, signaturePrimary, signatureSecondary, requestBody, primaryKey, secondaryKey);
-        }
-
         static async void PurgeFileFromCDN(string fileId, TraceWriter log, IConfigurationRoot config)
         {
             var forcePurge = config[CDN_FORCE_PURGE_KEY];        
