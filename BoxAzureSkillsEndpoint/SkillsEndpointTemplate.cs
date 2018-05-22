@@ -61,14 +61,14 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
             var boxClient = GetBoxClientWithApiKeyAndToken(config[BOX_SKILLS_API_KEY_KEY], writeToken);
 
-            //Build a few cards using fake data
+            //This is example code that generates fake data; here is where you would instead leverage the content intelligence system 
+            //you are integrating with and create the appropriate card metadata.
             var transcriptCard = BuildTranscriptCardFromFakeData();
             var keywordCard = BuildKeywordCarFromFakeData();
             var timelineCard = BuildTimelineCardFromFakeData();
 
             //Create the combined card metadata
-            var cards = new JArray { transcriptCard, keywordCard, timelineCard };
-            var cardMetadata = CreateCardMetadata(cards);
+            var cardMetadata = CreateCardMetadata(transcriptCard, keywordCard, timelineCard);
             
             //Upload the card metadata to Box
             var createdMD = await boxClient.MetadataManager.CreateFileMetadataAsync(sourceId, cardMetadata, BOX_SKILL_METADATA_SCOPE, BOX_SKILL_METADATA_TEMPLATE);

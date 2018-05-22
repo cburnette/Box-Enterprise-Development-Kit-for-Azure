@@ -5,7 +5,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 {
     public class SkillsHelper
     {
-        public static Dictionary<string, object> CreateCardMetadata(JArray cards)
+        public static Dictionary<string, object> CreateCardMetadata(params JObject[] cards)
         {
             var cardMetadata = new JObject(
                 new JProperty("cards", cards)
