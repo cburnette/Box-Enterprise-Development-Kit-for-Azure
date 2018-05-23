@@ -26,9 +26,6 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         public const string CDN_URL_FORMAT_STRING = "https://{0}.azureedge.net/{1}/{2}";
         public const string CDN_PURGE_QUEUE_NAME = "cdnpurgequeue";
         public const string METADATA_SCOPE = "enterprise";
-        public const string BOX_DELIVERY_TIMESTAMP_HEADER = "BOX-DELIVERY-TIMESTAMP";
-        public const string BOX_SIGNATURE_PRIMARY_HEADER = "BOX-SIGNATURE-PRIMARY";
-        public const string BOX_SIGNATURE_SECONDARY_HEADER = "BOX-SIGNATURE-SECONDARY";
 
     }
 }
