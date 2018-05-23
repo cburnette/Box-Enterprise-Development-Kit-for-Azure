@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoxEventsServiceBusConsumerExample", "Examples\BoxEventsServiceBusConsumerExample\BoxEventsServiceBusConsumerExample.csproj", "{784B6B69-7087-4EC5-87DC-D5EB62632FCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxSkillsHelper", "BoxSkillsHelper\BoxSkillsHelper.csproj", "{268E007D-7C04-4902-9D3F-426DDFFACEDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoxSkillsHelper", "BoxSkillsHelper\BoxSkillsHelper.csproj", "{268E007D-7C04-4902-9D3F-426DDFFACEDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxAzureCDNCloudServiceIntegration", "BoxAzureCDNCloudServiceIntegration\BoxAzureCDNCloudServiceIntegration.csproj", "{21768790-1C56-4295-A687-1741783EC8C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{268E007D-7C04-4902-9D3F-426DDFFACEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{268E007D-7C04-4902-9D3F-426DDFFACEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{268E007D-7C04-4902-9D3F-426DDFFACEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21768790-1C56-4295-A687-1741783EC8C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21768790-1C56-4295-A687-1741783EC8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21768790-1C56-4295-A687-1741783EC8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21768790-1C56-4295-A687-1741783EC8C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
