@@ -33,7 +33,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         {
             var config = GetConfiguration(context);
 
-            string requestBody = new StreamReader(req.Body).ReadToEnd();
+            string eventBody = new StreamReader(req.Body).ReadToEnd();
 
             //if (!ValidateWebhookSignatures(req, config, requestBody))
             //{
@@ -41,22 +41,22 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             //    return (ActionResult)new BadRequestResult();
             //}
 
-            dynamic webhook = JsonConvert.DeserializeObject(requestBody);
+            dynamic eventJson = JsonConvert.DeserializeObject(eventBody);
             log.Info($"Received webhook");
 
-            var formattedJson = JsonConvert.SerializeObject(webhook, Formatting.Indented);
+            var formattedJson = JsonConvert.SerializeObject(eventJson, Formatting.Indented);
             log.Info(formattedJson);
 
-            string type = webhook.type;
+            string type = eventJson.type;
             if (string.IsNullOrEmpty(type) || type != BOX_SKILL_TYPE)
             {
                 return (ActionResult)new BadRequestObjectResult("Not a valid Box Skill payload");
             }
 
-            string writeToken = webhook.token.write.access_token;
-            string readToken = webhook.token.read.access_token;
-            string sourceId = webhook.source.id;
-            string sourceName = webhook.source.name;
+            string writeToken = eventJson.token.write.access_token;
+            string readToken = eventJson.token.read.access_token;
+            string sourceId = eventJson.source.id;
+            string sourceName = eventJson.source.name;
             string downloadUrl = string.Format(BOX_FILE_CONTENT_URL_FORMAT_STRING, sourceId, readToken);
 
             var boxClient = GetBoxClientWithApiKeyAndToken(config[BOX_SKILLS_API_KEY_KEY], writeToken);
@@ -83,7 +83,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             var entryOne = new TranscriptCardEntry("Hello World!", appearanceOne );
 
             var appearanceTwo = new EntryAppearance(14.8, 17.5);
-            var entryTwo = new TranscriptCardEntry("Goodby Cruel World!", appearanceTwo );
+            var entryTwo = new TranscriptCardEntry("Goodbye Cruel World!", appearanceTwo );
 
             var entries = new List<SkillCardEntry>() { entryOne, entryTwo };
             var transcriptCard = CreateTranscriptCard("Transcript", "example-service-name", Guid.NewGuid().ToString(), entries, duration: 28);
