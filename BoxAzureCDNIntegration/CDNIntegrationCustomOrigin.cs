@@ -5,8 +5,11 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
 using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.TableStorage;
+using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.Config;
 using System.Threading.Tasks;
 using Box.V2;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
@@ -17,18 +20,37 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         {
             var config = GetConfiguration(context);
 
-            var blah = guid;
+            if (UseStorageOrigin(config))
+            {
+                log.Error($"Received request at custom origin but currently configured to use storage origin");
+                return new UnauthorizedResult();
+            }
 
-            var fileId = "294115226716";
-            var userId = "3419749388";
+            try
+            {
+                CloudTable fileTable = null;
+                CloudTable guidTable = null;
 
-            BoxClient box = GetBoxUserClient(config, userId);
+                //Azure Table Storage setup
+                (fileTable, guidTable) = await SetupTables(config);
 
-            var downloadUrl = await box.FilesManager.GetDownloadUriAsync(fileId);
+                var boxCDNGuidEntity = await RetrieveBoxCDNGuidEntity(guidTable, guid, config, log);
+                var fileId = boxCDNGuidEntity.FileId;
+                var ownerId = boxCDNGuidEntity.OwnerId;
 
-            RedirectResult redirect = new RedirectResult(downloadUrl.ToString());
+                var box = GetBoxUserClient(config, ownerId);
+                var downloadUrl = await box.FilesManager.GetDownloadUriAsync(fileId);
 
-            return redirect;
+                log.Info($"Redirecting to direct link in Box (fileId={fileId})");
+
+                var redirect = new RedirectResult(downloadUrl.ToString());
+                return redirect;
+            }
+            catch
+            {
+                log.Warning($"Error processing custom origin request (guid={guid})");
+                return new BadRequestResult();
+            }
         }
     }
 }

@@ -1,10 +1,6 @@
-﻿using Box.V2;
-using Box.V2.Config;
-using Box.V2.JWTAuth;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
-namespace Box.EnterpriseDevelopmentKit.Azure
+namespace Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration
 {
     static class Config
     {
@@ -24,6 +20,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         public const string AZURE_APP_KEY_KEY = "AzureAppKey";
         public const string AZURE_SUBSCRIPTION_ID_KEY = "AzureSubscriptionId";
         public const string TABLE_STORAGE_CONNECTION_STRING_KEY = "AzureWebJobsStorage";
+        public const string USE_STORAGE_ORIGIN_KEY = "UseStorageOrigin";
 
         public const string STORAGE_CONTAINER_FILENAME_FORMAT_STRING = "{0}/{1}";
         public const string CDN_FILE_TABLE_NAME = "boxcdnfileinfo";
@@ -33,5 +30,19 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         public const string CDN_PURGE_QUEUE_NAME = "cdnpurgequeue";
         public const string METADATA_SCOPE = "enterprise";
 
+        public static bool UseStorageOrigin(IConfigurationRoot config)
+        {
+            var useStorageOrigin = config[USE_STORAGE_ORIGIN_KEY];
+
+            if (string.IsNullOrEmpty(useStorageOrigin))
+            {
+                //default to true
+                return true;
+            }
+            else
+            {
+                return useStorageOrigin.ToLower() == "true";
+            }
+        }
     }
 }

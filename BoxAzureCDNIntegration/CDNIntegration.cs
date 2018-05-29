@@ -15,7 +15,8 @@ using System;
 using System.Collections.Generic;
 using Box.V2.Managers;
 using Microsoft.WindowsAzure.Storage.Queue;
-using static Box.EnterpriseDevelopmentKit.Azure.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.Config;
+using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.TableStorage;
 using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Security.Cryptography;
@@ -43,26 +44,23 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             if(!ValidateWebhookSignatures(req, config, requestBody))
             {
                 log.Warning("Signature check for Box webhook failed");
-                return (ActionResult)new BadRequestResult();
+                return new UnauthorizedResult();
             }
 
-            bool useStorageOrigin = false;
-
+            string cdnEndpointName = config[CDN_ENDPOINT_NAME_KEY];
             string containerName = null;
-            string cdnEndpointName = null;
             string storageConnectionString = null;
             CloudTable fileTable = null;
             CloudTable guidTable = null;
 
-            if (useStorageOrigin)
+            if (UseStorageOrigin(config))
             {
                 containerName = config[CDN_STORAGE_CONTAINER_NAME_KEY];
-                cdnEndpointName = config[CDN_ENDPOINT_NAME_KEY];
                 storageConnectionString = config[CDN_STORAGE_CONNECTION_STRING_KEY];
             }
             else
             {
-                //Azure Table setup
+                //Azure Table Storage setup
                 (fileTable, guidTable) = await SetupTables(config);
             }
 
@@ -78,12 +76,12 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                 
                 string cdnUrl = null;
 
-                if (useStorageOrigin)
+                if (UseStorageOrigin(config))
                 {
                     var storageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
                     var fileStream = await box.FilesManager.DownloadStreamAsync(fileId, timeout: TimeSpan.FromMinutes(10));
-                    log.Info($"Retrieved stream from Box for fileId '{fileId}'");
+                    log.Info($"Retrieved stream from Box (fileId={fileId})");
 
                     var blobName = string.Format(STORAGE_CONTAINER_FILENAME_FORMAT_STRING, fileId, filename);
                     var cloudBlobClient = storageAccount.CreateCloudBlobClient();
@@ -101,18 +99,18 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                 try
                 {
                     var fetchedMD = await box.MetadataManager.GetFileMetadataAsync(fileId, METADATA_SCOPE, templateName);
-                    log.Info($"Found CDN metadata for fileId '{fileId}'");
+                    log.Info($"Found CDN metadata (fileId={fileId})");
 
                     //invalidate this cached file in the CDN because a new version was uploaded to Box
                     PurgeFileFromCDN(fileId, log, config);
                 }
                 catch //exception means metadata hasn't been created yet so we know this is a new file
                 {
-                    if (!useStorageOrigin)
+                    if (!UseStorageOrigin(config))
                     {
                         //we are using a custom origin so create a guid, format url, and store in table storage; only need to do this the first time, not for each new version
                         var cryptoProvider = new RNGCryptoServiceProvider();
-                        var byteArray = new byte[32];
+                        var byteArray = new byte[32]; //256 bit secure random key
                         cryptoProvider.GetBytes(byteArray);
                         var guid = BitConverter.ToString(byteArray).Replace("-", string.Empty).ToLower();
 
@@ -122,14 +120,14 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
                     var md = new Dictionary<string, object>() { { "url", cdnUrl } };
                     var createdMD = await box.MetadataManager.CreateFileMetadataAsync(fileId, md, METADATA_SCOPE, templateName);
-                    log.Info($"Created CDN metadata for fileId '{fileId}'");
+                    log.Info($"Created CDN metadata (fileId={fileId})");
                 }
 
                 return (ActionResult)new OkObjectResult(null);
             }
             else if (trigger == "FILE.DELETED" || trigger == "FILE.TRASHED")
             {
-                if (useStorageOrigin)
+                if (UseStorageOrigin(config))
                 {
                     var storageAccount = CloudStorageAccount.Parse(storageConnectionString);
                     var cloudBlobClient = storageAccount.CreateCloudBlobClient();
@@ -151,17 +149,20 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                     var guidEntity = await RetrieveBoxCDNGuidEntity(guidTable, fileEntity.Guid, config, log);
 
                     TableOperation.Delete(fileEntity);
+                    log.Info($"Deleted BoxCDNFileEntity from table (fileId={fileId})");
+
                     TableOperation.Delete(guidEntity);
+                    log.Info($"Deleted BoxCDNGuidEntity from table (guid={fileEntity.Guid})");
                 }
 
                 PurgeFileFromCDN(fileId, log, config);
 
-                return (ActionResult)new OkObjectResult(null);
+                return new OkObjectResult(null);
             }
             else
             {
                 log.Warning($"Invalid Box webhook type: '{trigger}'");
-                return (ActionResult)new BadRequestResult();
+                return new BadRequestResult();
             }
         }
 
@@ -182,62 +183,8 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                 await queue.AddMessageAsync(message);
                 var items = queue.ApproximateMessageCount;
 
-                log.Info($"Added message to queue to purge fileId '{fileId}' from CDN");
+                log.Info($"Added message to queue to purge file from CDN (fileId={fileId})");
             }     
-        }
-
-        static async void StoreBoxCDNInfo(string guid, string fileId, string ownerId, CloudTable fileTable, CloudTable guidTable, IConfigurationRoot config, TraceWriter log)
-        {
-            var boxCDNGuidEntity = new BoxCDNGuidEntity(guid)
-            {
-                FileId = fileId,
-                OwnerId = ownerId
-            };
-            var insertOperation = TableOperation.InsertOrReplace(boxCDNGuidEntity);
-            await guidTable.ExecuteAsync(insertOperation);
-            log.Info($"Stored BoxCDNFileInfo in Table (guid={guid})");
-
-            var boxCDNFileEntity = new BoxCDNFileEntity(fileId)
-            {
-                Guid = guid,
-                OwnerId = ownerId
-            };
-            insertOperation = TableOperation.InsertOrReplace(boxCDNFileEntity);
-            await fileTable.ExecuteAsync(insertOperation);
-            log.Info($"Stored BoxCDNGuidInfo in Table (guid={guid})");
-        }
-
-        static async Task<BoxCDNGuidEntity> RetrieveBoxCDNGuidEntity(CloudTable table, string guid, IConfigurationRoot config, TraceWriter log)
-        {
-            var retrieveOp = TableOperation.Retrieve<BoxCDNGuidEntity>(guid, string.Empty);
-            var retrievedRes = await table.ExecuteAsync(retrieveOp);
-            var boxCDNFileInfoEntity = (BoxCDNGuidEntity)retrievedRes.Result;
-            log.Info($"Retrieved BoxCDNFileInfo from Table (guid={guid})");
-            return boxCDNFileInfoEntity;
-        }
-
-        static async Task<BoxCDNFileEntity> RetrieveBoxCDNFileEntity(CloudTable table, string fileId, IConfigurationRoot config, TraceWriter log)
-        {
-            var retrieveOp = TableOperation.Retrieve<BoxCDNFileEntity>(fileId, string.Empty);
-            var retrievedRes = await table.ExecuteAsync(retrieveOp);
-            var boxCDNGuidEntity = (BoxCDNFileEntity)retrievedRes.Result;
-            log.Info($"Retrieved BoxCDNGuidInfo from Table (fileId={fileId})");
-            return boxCDNGuidEntity;
-        }
-
-        static async Task<(CloudTable, CloudTable)> SetupTables(IConfigurationRoot config)
-        {
-            var storageConnectionString = config[TABLE_STORAGE_CONNECTION_STRING_KEY];
-            var storageAccount = CloudStorageAccount.Parse(storageConnectionString);
-            var tableClient = storageAccount.CreateCloudTableClient();
-
-            var fileTable = tableClient.GetTableReference(CDN_FILE_TABLE_NAME);
-            await fileTable.CreateIfNotExistsAsync();
-
-            var guidTable = tableClient.GetTableReference(CDN_GUID_TABLE_NAME);
-            await guidTable.CreateIfNotExistsAsync();
-           
-            return (fileTable, guidTable);
         }
     }
 
