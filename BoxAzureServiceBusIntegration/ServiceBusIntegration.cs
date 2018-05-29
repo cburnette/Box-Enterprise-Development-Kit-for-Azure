@@ -142,7 +142,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             await topicClient.CloseAsync();
         }
 
-        static string PartitionKey(string topicName)
+        static string BuildPartitionKey(string topicName)
         {
             return $"BoxEvents-{topicName}";
         }
@@ -160,7 +160,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
         static async Task<BoxStreamPositionEntity> RetrieveNextStreamPosition(CloudTable table, IConfigurationRoot config)
         {
-            var retrieveOp = TableOperation.Retrieve<BoxStreamPositionEntity>(PartitionKey(config[SERVICE_BUS_TOPIC_NAME_KEY]), ROW_KEY_VALUE);
+            var retrieveOp = TableOperation.Retrieve<BoxStreamPositionEntity>(BuildPartitionKey(config[SERVICE_BUS_TOPIC_NAME_KEY]), ROW_KEY_VALUE);
             var retrievedRes = await table.ExecuteAsync(retrieveOp);
             var nextStreamPositionEntity = (BoxStreamPositionEntity)retrievedRes.Result;
             return nextStreamPositionEntity;
@@ -168,7 +168,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
         static async void StoreNextStreamPosition(string nextStreamPosition, CloudTable table, IConfigurationRoot config, TraceWriter log)
         {
-            var nextStreamPositionEntry = new BoxStreamPositionEntity(config[SERVICE_BUS_TOPIC_NAME_KEY], ROW_KEY_VALUE)
+            var nextStreamPositionEntry = new BoxStreamPositionEntity(BuildPartitionKey(config[SERVICE_BUS_TOPIC_NAME_KEY]), ROW_KEY_VALUE)
             {
                 NextStreamPosition = nextStreamPosition
             };
@@ -184,7 +184,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
     {
         public BoxStreamPositionEntity(string partitionkey, string rowKey)
         {
-            this.PartitionKey = $"BoxEvents-{partitionkey}";
+            this.PartitionKey = partitionkey;
             this.RowKey = rowKey;
         }
 

@@ -23,7 +23,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
             var contentPath = $"/{fileId}/*";
             log.Info($"Requesting purge of {contentPath} on CDN endpoint {config[CDN_ENDPOINT_NAME_KEY]}");
-            azure.CdnProfiles.PurgeEndpointContent("azure-function-test-chad-1", "bedk-dev-cdn-verizon", config[CDN_ENDPOINT_NAME_KEY], new List<string>() { contentPath });
+            azure.CdnProfiles.PurgeEndpointContent(config[CDN_RESOURCE_GROUP_NAME_KEY], config[CDN_PROFILE_NAME_KEY], config[CDN_ENDPOINT_NAME_KEY], new List<string>() { contentPath });
             log.Info($"Completed purge of {contentPath} on CDN endpoint {config[CDN_ENDPOINT_NAME_KEY]}");
         }
     }
