@@ -37,6 +37,9 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         [FunctionName("BoxAzureCDNIntegration")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req, TraceWriter log, ExecutionContext context)
         {
+            //for debugging; clear out old incoming webhook retries
+            //return new OkObjectResult(null);
+
             var config = GetConfiguration(context);
 
             string requestBody = new StreamReader(req.Body).ReadToEnd();
@@ -102,7 +105,15 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                     log.Info($"Found CDN metadata (fileId={fileId})");
 
                     //invalidate this cached file in the CDN because a new version was uploaded to Box
-                    PurgeFileFromCDN(fileId, log, config);
+                    if (UseStorageOrigin(config))
+                    {
+                        PurgeFileFromCDN(fileId, config, log);
+                    }
+                    else
+                    {
+                        var fileEntity = await RetrieveBoxCDNFileEntity(fileTable, fileId, config, log);
+                        PurgeFileFromCDN(fileEntity.Guid, config, log);
+                    }                
                 }
                 catch //exception means metadata hasn't been created yet so we know this is a new file
                 {
@@ -141,21 +152,24 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                         await ((CloudBlob)blob).DeleteIfExistsAsync();
                         log.Info($"Deleted fileId '{fileId}' from storage container '{containerName}'");
                     }
+
+                    PurgeFileFromCDN(fileId, config, log);
                 }
                 else //using custom origin function
                 {
                     //need to remove the table entries
                     var fileEntity = await RetrieveBoxCDNFileEntity(fileTable, fileId, config, log);
                     var guidEntity = await RetrieveBoxCDNGuidEntity(guidTable, fileEntity.Guid, config, log);
+                    var guid = fileEntity.Guid;
 
                     TableOperation.Delete(fileEntity);
                     log.Info($"Deleted BoxCDNFileEntity from table (fileId={fileId})");
 
                     TableOperation.Delete(guidEntity);
-                    log.Info($"Deleted BoxCDNGuidEntity from table (guid={fileEntity.Guid})");
-                }
+                    log.Info($"Deleted BoxCDNGuidEntity from table (guid={guid})");
 
-                PurgeFileFromCDN(fileId, log, config);
+                    PurgeFileFromCDN(guid, config, log);
+                }
 
                 return new OkObjectResult(null);
             }
@@ -166,10 +180,10 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             }
         }
 
-        static async void PurgeFileFromCDN(string fileId, TraceWriter log, IConfigurationRoot config)
+        static async void PurgeFileFromCDN(string id, IConfigurationRoot config, TraceWriter log)
         {
             var forcePurge = config[CDN_FORCE_PURGE_KEY];        
-            if (forcePurge != null && forcePurge == "true")
+            if (forcePurge != null && forcePurge.ToLower() == "true")
             {
                 //add message to the purge queue; will cause CDN purge function to execute
                 var connectionString = config[CDN_STORAGE_QUEUE_CONNECTION_STRING_KEY];
@@ -179,11 +193,10 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                 var queue = queueClient.GetQueueReference(CDN_PURGE_QUEUE_NAME);
                 await queue.CreateIfNotExistsAsync();
 
-                var message = new CloudQueueMessage(fileId);
+                var message = new CloudQueueMessage(id);
                 await queue.AddMessageAsync(message);
-                var items = queue.ApproximateMessageCount;
 
-                log.Info($"Added message to queue to purge file from CDN (fileId={fileId})");
+                log.Info($"Added message to queue to purge file from CDN (id={id})");
             }     
         }
     }
