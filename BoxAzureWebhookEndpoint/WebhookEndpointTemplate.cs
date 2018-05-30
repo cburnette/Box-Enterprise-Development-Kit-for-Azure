@@ -27,7 +27,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             if (!ValidateWebhookSignatures(req, config, requestBody))
             {
                 log.Error("Signature check for Box webhook failed");
-                return (ActionResult)new BadRequestResult();
+                return (ActionResult)new UnauthorizedResult();
             }
 
             dynamic webhook = JsonConvert.DeserializeObject(requestBody);
@@ -36,7 +36,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure
 
             if (trigger == EXPECTED_TRIGGER)
             {
-                log.Info($"Box webhook function processed a request for the trigger '{trigger}' for source Id '{sourceId}'");
+                log.Info($"Box webhook function processed a request (trigger=({trigger}), sourceId=({sourceId})");
 
                 //do something interesting here
 

@@ -1,0 +1,10 @@
+﻿{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "BoxConfig": "YOUR_VALUE_HERE",
+    "BoxWebhookPrimaryKey": "YOUR_VALUE_HERE",
+    "BoxWebhookSecondaryKey": "YOUR_VALUE_HERE"
+  }
+}
