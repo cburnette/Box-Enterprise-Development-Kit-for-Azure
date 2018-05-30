@@ -1,0 +1,45 @@
+﻿//// Use this config section for Storage Origin
+//{
+//  "IsEncrypted": false,
+//  "Values": {
+//    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+//    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+//    "BoxConfig": "YOUR_VALUE_HERE",
+//    "BoxWebhookPrimaryKey": "YOUR_VALUE_HERE",
+//    "BoxWebhookSecondaryKey": "YOUR_VALUE_HERE",
+//    "BoxMetadataTemplateName": "YOUR_VALUE_HERE",
+//    "CDNResourceGroupName": "YOUR_VALUE_HERE",
+//    "CDNProfileName": "YOUR_VALUE_HERE",
+//    "CDNStorageConnectionString": "YOUR_VALUE_HERE",
+//    "CDNStorageContainerName": "YOUR_VALUE_HERE",
+//    "CDNEndpointName": "YOUR_VALUE_HERE",
+//    "CDNForcePurge": true OR false,
+//    "UseStorageOrigin": true,
+//    "AzureADTenantId": "YOUR_VALUE_HERE",
+//    "AzureAppClientId": "YOUR_VALUE_HERE",
+//    "AzureAppKey": "YOUR_VALUE_HERE",
+//    "AzureSubscriptionId": "YOUR_VALUE_HERE"
+//  }
+//}
+
+//// Use this config section for Custom Origin
+//{
+//  "IsEncrypted": false,
+//  "Values": {
+//    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+//    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+//    "BoxConfig": "YOUR_VALUE_HERE",
+//    "BoxWebhookPrimaryKey": "YOUR_VALUE_HERE",
+//    "BoxWebhookSecondaryKey": "YOUR_VALUE_HERE",
+//    "BoxMetadataTemplateName": "YOUR_VALUE_HERE",
+//    "CDNResourceGroupName": "YOUR_VALUE_HERE",
+//    "CDNProfileName": "YOUR_VALUE_HERE",
+//    "CDNEndpointName": "YOUR_VALUE_HERE",
+//    "CDNForcePurge": true OR false,
+//    "UseStorageOrigin": false,
+//    "AzureADTenantId": "YOUR_VALUE_HERE",
+//    "AzureAppClientId": "YOUR_VALUE_HERE",
+//    "AzureAppKey": "YOUR_VALUE_HERE",
+//    "AzureSubscriptionId": "YOUR_VALUE_HERE"
+//  }
+//}
