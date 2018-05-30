@@ -3,7 +3,7 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
-    "BoxConfig": "YOUR_VALUE_HERE",
+    "BoxConfig": "YOUR_VALUE_HERE", //use the Box CLI with the following command once you register your environment: box configure environments dump-config --escape-quotes
     "BoxWebhookPrimaryKey": "YOUR_VALUE_HERE",
     "BoxWebhookSecondaryKey": "YOUR_VALUE_HERE"
   }
