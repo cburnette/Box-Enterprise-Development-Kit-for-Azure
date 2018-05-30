@@ -26,18 +26,28 @@ namespace Box.EnterpriseDevelopmentKit.Azure
                 return new UnauthorizedResult();
             }
 
+            CloudTable fileTable = null;
+            CloudTable guidTable = null;
+            string fileId;
+            string ownerId;
+
             try
             {
-                CloudTable fileTable = null;
-                CloudTable guidTable = null;
-
                 //Azure Table Storage setup
                 (fileTable, guidTable) = await SetupTables(config);
 
                 var boxCDNGuidEntity = await RetrieveBoxCDNGuidEntity(guidTable, guid, config, log);
-                var fileId = boxCDNGuidEntity.FileId;
-                var ownerId = boxCDNGuidEntity.OwnerId;
+                fileId = boxCDNGuidEntity.FileId;
+                ownerId = boxCDNGuidEntity.OwnerId;
+            }
+            catch
+            {
+                log.Warning($"Requested guid not found in Table (guid={guid})");
+                return new BadRequestResult();
+            }
 
+            try
+            {
                 var box = GetBoxUserClient(config, ownerId);
                 var downloadUrl = await box.FilesManager.GetDownloadUriAsync(fileId);
 
@@ -48,8 +58,8 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             }
             catch
             {
-                log.Warning($"Error processing custom origin request (guid={guid})");
-                return new BadRequestResult();
+                log.Error($"Error retrieving download URI for file (fileId={fileId})");
+                return new StatusCodeResult(500);
             }
         }
     }
