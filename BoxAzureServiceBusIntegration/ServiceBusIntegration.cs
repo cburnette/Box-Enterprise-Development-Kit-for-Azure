@@ -23,9 +23,6 @@ namespace Box.EnterpriseDevelopmentKit.Azure
         public const string SERVICE_BUS_CONNECTION_STRING_KEY = "ServiceBusConnectionString";
         public const string SERVICE_BUS_TOPIC_NAME_KEY = "ServiceBusTopicName";
 
-        //commentary on why Service Bus instead of Storage Queue:  
-        //https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-azure-and-service-bus-queues-compared-contrasted
-
         static bool resetNextStreamPosition_DebugOnly = false;  //used for debugging; clears NextStreamPosition causing fetch process to reset
 
         [FunctionName("BoxAzureServiceBusIntegration")]

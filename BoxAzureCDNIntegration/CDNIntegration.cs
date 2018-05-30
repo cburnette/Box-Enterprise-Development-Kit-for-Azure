@@ -200,32 +200,4 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             }     
         }
     }
-
-    public class BoxCDNGuidEntity : TableEntity
-    {
-        public BoxCDNGuidEntity(string guid)
-        {
-            this.PartitionKey = guid;
-            this.RowKey = string.Empty;
-        }
-
-        public BoxCDNGuidEntity() { }
-
-        public string FileId { get; set; }
-        public string OwnerId { get; set; }
-    }
-
-    public class BoxCDNFileEntity : TableEntity
-    {
-        public BoxCDNFileEntity(string fileId)
-        {
-            this.PartitionKey = fileId;
-            this.RowKey = string.Empty;
-        }
-
-        public BoxCDNFileEntity() { }
-
-        public string Guid { get; set; }
-        public string OwnerId { get; set; }
-    }
 }
