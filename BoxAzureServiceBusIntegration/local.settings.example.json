@@ -1,7 +1,12 @@
 ﻿{
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "YOUR_VALUE_HERE",
-    "AzureWebJobsDashboard": "YOUR_VALUE_HERE"
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "TimerScheduleExpression": "*/20 * * * * *", //CRON expression for the Azure Function timer trigger; see https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer
+    "BoxConfig": "YOUR_VALUE_HERE",
+    "ServiceBusConnectionString": "YOUR_VALUE_HERE",
+    "ServiceBusTopicName": "YOUR_VALUE_HERE",
+    "StreamPositionTableName": "YOUR_VALUE_HERE" //for example, boxstreampositiontable
   }
 }
