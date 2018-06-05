@@ -30,31 +30,32 @@ namespace Box.EnterpriseDevelopmentKit.Azure
             var telemetryClient = new TelemetryClient() { InstrumentationKey = key };
             DateTime start = DateTime.UtcNow;
 
-            var username = "Some Name";
+            var username = "BoxAzureAppInsights";
 
             // Track an Event
-            var evt = new EventTelemetry("Function called");
-            UpdateTelemetryContext(evt.Context, context, username);
-            telemetryClient.TrackEvent(evt);
+            //var evt = new EventTelemetry("Function called");
+            //UpdateTelemetryContext(evt.Context, context, username);
+            //telemetryClient.TrackEvent(evt);
 
             // Track a Metric
-            var metric = new MetricTelemetry("Test Metric", DateTime.Now.Millisecond);
+            var r = new Random((int)DateTime.Now.Ticks);
+            var metric = new MetricTelemetry("File Upload to Box", r.Next(200,500));
             UpdateTelemetryContext(metric.Context, context, username);
             telemetryClient.TrackMetric(metric);
 
             //insightsLog.LogMetric("Test Metric New", DateTime.Now.Millisecond);
 
             // Track a Dependency
-            var dependency = new DependencyTelemetry
-            {
-                Name = "GET users/me",
-                Target = "box.com",
-                Timestamp = start,
-                Duration = TimeSpan.FromSeconds(1),
-                Success = false
-            };
-            UpdateTelemetryContext(dependency.Context, context, username);
-            telemetryClient.TrackDependency(dependency);
+            //var dependency = new DependencyTelemetry
+            //{
+            //    Name = "GET users/me",
+            //    Target = "box.com",
+            //    Timestamp = start,
+            //    Duration = TimeSpan.FromSeconds(1),
+            //    Success = false
+            //};
+            //UpdateTelemetryContext(dependency.Context, context, username);
+            //telemetryClient.TrackDependency(dependency);
         }
 
         // This correllates all telemetry with the current Function invocation
