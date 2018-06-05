@@ -1,4 +1,3 @@
-
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -13,7 +12,6 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
-using Box.V2.Managers;
 using Microsoft.WindowsAzure.Storage.Queue;
 using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.Config;
 using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.TableStorage;
@@ -23,15 +21,6 @@ using System.Security.Cryptography;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
-    //Box CLI command to create webhook:
-    //box webhooks create 48060867550 folder FILE.UPLOADED,FILE.DELETED,FILE.TRASHED https://cburnette.ngrok.io/api/BoxAzureCDNIntegration --as-user 3419749388
-
-    //Ngrok command:
-    //ngrok http -subdomain=cburnette 7071
-
-    //skills url
-    //https://cburnette.ngrok.io/api/BoxAzureSkillsTemplate
-
     public static class CDNIntegration
     {
         [FunctionName("BoxAzureCDNIntegration")]

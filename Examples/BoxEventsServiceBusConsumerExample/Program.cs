@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +10,7 @@ namespace Box.EnterpriseDevelopmentKit.Azure.Examples
 {
     class Program
     {
-        const string ServiceBusConnectionString = "Endpoint=sb://box-edk-dev.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=/3k7PIe8xEBASBQBhMogf26hxW0ecirimm1XnHMSsxk=";
+        const string ServiceBusConnectionString = "YOUR_SERVICE_BUS_CONNECTION_STRING";
         const string TopicName = "box-edk-dev-events-topic";
         const string SubscriptionName = "box-edk-dev-events-subscription";
         static ISubscriptionClient subscriptionClient;

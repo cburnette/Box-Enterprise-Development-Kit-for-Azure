@@ -14,10 +14,6 @@ using System;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
 {
-    //sample card format: https://cloud.app.box.com/s/b3y0z3y2w526d60pnxstvgie79yuby7v/file/290240418780
-
-    //ngrok http -subdomain=cburnette 7071
-
     public static class SkillsEndpointTemplate
     {
         public const string BOX_SKILLS_API_KEY_KEY = "BoxSkillsApiKey";

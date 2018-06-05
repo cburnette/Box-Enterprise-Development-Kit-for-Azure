@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -8,7 +7,6 @@ using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.TableStorage;
 using static Box.EnterpriseDevelopmentKit.Azure.BoxAzureCDNIntegration.Config;
 using System.Threading.Tasks;
-using Box.V2;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Box.EnterpriseDevelopmentKit.Azure

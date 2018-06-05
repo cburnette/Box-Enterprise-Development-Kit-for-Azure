@@ -1,4 +1,3 @@
-
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -6,9 +5,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Box.V2.Managers;
 using static Box.EnterpriseDevelopmentKit.Azure.Shared.Config;
 
 namespace Box.EnterpriseDevelopmentKit.Azure
